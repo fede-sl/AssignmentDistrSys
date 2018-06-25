@@ -7,14 +7,15 @@ import java.util.Scanner;
 
 public class Client implements Runnable{
 		
+	
 	 public static void main(String[] args) throws Exception {
 	 
 		 (new Thread(new Client())).start();
 		      
 		       
 	}
-	public static MedicalReport createReport(){
-		 /*Scanner in = new Scanner (System.in);
+	public static MedicalReport createReport(Scanner in){
+		 
          System.out.println("Type the name: ");
          String name = in.nextLine();
          System.out.println("Type the age: ");
@@ -24,20 +25,21 @@ public class Client implements Runnable{
          String id = in.nextLine();
          System.out.println("Type the record: ");
          String record = in.nextLine();
-         in.close();
+         //in.close();
          
-         return new MedicalReport(age,name,id,record);*/
-		return new MedicalReport(10,"pepe","id","record");
+         return new MedicalReport(age,name,id,record);
+		//return new MedicalReport(10,"pepe","id","record");
 		
 	}
 	@Override
 	public void run() {
-	//  int port = 12345;       
-	      //  String computer = "localhost";
+		Scanner sc = new Scanner (System.in);
+	
 	        try{
 	            Socket s = new Socket("localhost", 12348);
 	            ObjectOutputStream p = new ObjectOutputStream(s.getOutputStream());
 	            ObjectInputStream in = new ObjectInputStream(s.getInputStream());
+	        
 	           /* PrintWriter print = new PrintWriter(s.getOutputStream());
 	            print.println("ready");
 	            print.flush();*/
@@ -46,20 +48,20 @@ public class Client implements Runnable{
 	            boolean stop = false;
 	            while(!stop){
 	            	try{
-	            	MedicalReport report = createReport();
+	            	MedicalReport report = createReport(sc);
 	            	p.writeObject(report);
 	            	p.flush();
 	            	p.reset();
 	            	
 	            	System.out.println("Do you want to continue? Yes or No");
-	            	Scanner in1 = new Scanner (System.in);
+	            	;
 	            	String answer="";
-	            	if(in1.hasNextLine())
-	            		answer = in1.nextLine();
+	            	if(sc.hasNextLine())
+	            		answer = sc.nextLine();
 	            	
-	            	if(!answer.equalsIgnoreCase("yes"))
+	            	if(answer.equalsIgnoreCase("no"))
 	            		stop = true;
-	            		in1.close();
+	            		
 	            	}
 	            	catch(Exception e){
 	            		System.out.println(e);
@@ -68,7 +70,9 @@ public class Client implements Runnable{
 	            }
 	            
 	            try{
+	            Object wait = sc.next();
 	            s.close();
+	            sc.close();
 	            }
 	            catch(Exception e){
 	            	System.out.println(e);
