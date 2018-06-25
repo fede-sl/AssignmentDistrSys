@@ -29,5 +29,6 @@ public class MedicalReport implements Serializable {
 		return this.name + ". \n" + this.age + ". \n" + this.id + ". \n" + this.record;
 	}
 	
+	
 
 }
